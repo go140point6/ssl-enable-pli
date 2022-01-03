@@ -1,0 +1,66 @@
+$domain = pli-oracle.mydomain.com
+$ip = 192.168.1.100
+$user = ubuntu
+
+snapd already installed on Ubuntu 20.04
+
+Ensure you have A record in DNS pointing to the IP address with your custom domain.  In this example:
+  $domain = pli-oracle.mydomain.com
+  $ip = 192.168.1.100
+
+Ensure latest version
+  sudo snap install core; sudo snap refresh core
+
+Install
+  sudo snap install --classic certbot
+
+Open port 80 if not open
+  sudo ufw allow 80
+Open port 6689 if not open
+  sudo ufw allow 6689
+
+Get certs:
+  sudo certbot certonly --standalone
+
+  Note:
+  1. Make sure this email address is something you check (put your real address in)
+  2. Agree to the ToS
+  3. Press N
+
+All certs are in /etc/letsencrypt/live/$domain/
+  fullchain.pem
+  privkey.pem
+  
+Fix permissions
+  sudo chmod 0755 /etc/letsencrypt/{live,archive}
+  sudo chmod 0640 /etc/letsencrypt/live/$domain/privkey.pem
+  sudo chgrp $user /etc/letsencrypt/live/$domain/privkey.pem
+  
+  Note: Will need to test that the permissions don't change upon renewal.
+  
+Add a renew_hook
+  sudo vim /etc/letsencrypt/renewal/$domain.conf
+
+  add to bottom:
+    renew_hook = runuser -l $user -c 'pm2 restart all --update-env'
+
+Note: user whatever text editor that you are comfortable with, i.e. sudo nano
+Note 2: $user is whichever user you are running the pli service
+
+Verify Renewal
+  systemctl list-timers
+  
+  Look for similar to veriy:
+  NEXT                        LEFT          LAST                        PASSED       UNIT                         ACTIVATES
+  Mon 2022-01-03 21:54:00 PST 7h left       n/a                         n/a          snap.certbot.renew.timer     snap.certbot.renew.service
+  
+Test Renewal
+  certbot renew --dry-run
+  
+Force Renewal
+  sudo certbot renew --force-renewal
+  
+
+  
+  
+  
