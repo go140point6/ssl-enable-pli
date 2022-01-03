@@ -58,6 +58,18 @@ Test Renewal
 Force Renewal
   sudo certbot renew --force-renewal
   
+Edit 2_nodeStartPM2.sh
+  Remove:
+    export PLUGIN_TLS_PORT=0
+    export SECURE_COOKIES=false
+  
+  Add:
+    export PLUGIN_TLS_PORT=6689
+    
+  Note: Be sure to restart the pli service:
+    pm2 restart all --update-env
+
+  
 
   
   
