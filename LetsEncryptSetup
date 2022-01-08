@@ -58,7 +58,7 @@ Verify Renewal
   Mon 2022-01-03 21:54:00 PST 7h left       n/a                         n/a          snap.certbot.renew.timer     snap.certbot.renew.service
   
 Test Renewal
-  certbot renew --dry-run
+  sudo certbot renew --dry-run
   
 Force Renewal
   sudo certbot renew --force-renewal
