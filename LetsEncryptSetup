@@ -2,7 +2,12 @@ $domain = pli-oracle.mydomain.com
 $ip = 192.168.1.100
 $user = ubuntu
 
-snapd already installed on Ubuntu 20.04
+snapd already installed on Ubuntu 20.04 (some distros)
+  snap --version
+  
+if missing
+  sudo apt-get update
+  sudo apt-get install snapd
 
 Ensure you have A record in DNS pointing to the IP address with your custom domain.  In this example:
   $domain = pli-oracle.mydomain.com
