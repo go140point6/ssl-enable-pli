@@ -71,6 +71,12 @@ Edit 2_nodeStartPM2.sh
   Add:
     export PLUGIN_TLS_PORT=6689
     
+    and under . ~/.tmp_profile, add
+    export TLS_CERT_PATH=/etc/letsencrypt/live/$full_domain_name/fullchain.pem
+    export TLS_KEY_PATH=/etc/letsencrypt/live/$full_domain_name/privkey.pem
+    
+    i.e $full_domain_name = myoracle.mydomain.com
+    
   Note: Be sure to restart the pli service:
     pm2 restart all --update-env
 
